@@ -1,5 +1,4 @@
 # hoobierecords.github.io
-Hoobie Records
 **Hoobie Records** is an independent underground music label operating at the outer limits of sound, taste, and artistic sanity. Based in **Grand Rapids, Michigan**, the label exists as both a release platform and a creative sanctuary for artists whose work defies genre, convention, and polite expectations.
 
 Founded as a DIY outlet rather than a traditional business, Hoobie Records functions less like a label and more like a **curated zone of sonic chaos**—a place where experimental music, outsider art, noise, absurdism, and unfiltered creative impulses collide. Its catalog embraces the grotesque, the humorous, the offensive, and the unclassifiable, rejecting commercial polish in favor of raw expression and conceptual extremity.
