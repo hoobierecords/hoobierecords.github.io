@@ -12,6 +12,6 @@ Hoobie Records’ output spans a wide spectrum of experimental forms, including 
 
 The label operates primarily through **[Bandcamp](https://hoobierecords.bandcamp.com)**, maintaining a direct connection between artists and listeners while preserving full creative autonomy. Though largely absent from mainstream music press, Hoobie Records has cultivated a **cult following within underground and experimental music communities**, where its uncompromising aesthetic and unapologetic attitude are seen as a feature rather than a liability.
 
-Ultimately, Hoobie Records stands as a **testament to the enduring power of DIY culture and outsider art**. It exists for artists on the fringe, listeners with strong stomachs and open minds, and anyone interested in music that feels dangerous, unhinged, or gleefully wrong. Hoobie Records is not here to fit in, trend, or behave—it is here to **document madness, celebrate creative depravity, and push sound into places it probably shouldn’t go.
+Ultimately, Hoobie Records stands as a **testament to the enduring power of DIY culture and outsider art**. It exists for artists on the fringe, listeners with strong stomachs and open minds, and anyone interested in music that feels dangerous, unhinged, or gleefully wrong. Hoobie Records is not here to fit in, trend, or behave—it is here to **document madness, celebrate creative depravity, and push sound into places it probably shouldn’t go.**
 
 
