@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- plasma-->
+<link href="css/plasma.css" type="text/css" rel="stylesheet" />
+<title>Hoobie Records</title>
+
+<style>
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('fonts/BebasNeue-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --bg: rgb(255, 234, 0);
+  --panel: #000000;
+  --accent: #ff0000;
+  --text: #e8e9f0;
+  --muted: #fffa69;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  /* font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; */
+  font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+   /* background: radial-gradient(circle at top, #2a1414, var(--bg)); */
+  background-color:yellow;
+  background-image: linear-gradient(rgb(238, 255, 0), rgb(255, 0, 0));
+  color: var(--text);
+  line-height: 1.6;
+  padding-top: 64px;
+}
+
+/* ---------- NAV ---------- */
+nav.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  gap: 1rem;
+  background: rgb(0, 0, 0);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+nav.top-nav .brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+nav.top-nav .links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* navbar logo on the right */
+.nav-logo {
+  order: 2;
+  height: 56px;
+  max-height: 56px;
+  margin-left: auto;
+  pointer-events: none;
+  margin-top: 25px;
+}
+
+@media (max-width: 640px) {
+  .nav-logo { height: 40px; max-height: 40px; margin-top: 10px; }
+}
+
+/* place links on left, brand on right */
+nav.top-nav .links { order: 1; }
+nav.top-nav .brand { order: 2; }
+
+/* accessible visually-hidden helper */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Mobile: collapse links into dropdown */
+nav.top-nav .nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  nav.top-nav {
+    padding: 0 0.75rem;
+  }
+
+  /* show toggle */
+  nav.top-nav .nav-toggle { display: block; order: 1; }
+
+  /* stack links as dropdown */
+  nav.top-nav .links {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 64px;
+    background: rgba(10,12,20,0.95);
+    flex-direction: column;
+    display: flex;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 0.5rem;
+    gap: 0.5rem;
+    transition: max-height 280ms ease, opacity 200ms ease, padding 200ms ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  nav.top-nav .links.open {
+    max-height: 420px;
+    opacity: 1;
+    pointer-events: auto;
+    padding: 0.5rem 1rem 1rem 1rem;
+  }
+
+  nav.top-nav .links a {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    display: block;
+  }
+
+  /* keep brand on right */
+  nav.top-nav .brand { order: 2; }
+}
+
+nav.top-nav a {
+  color: var(--bg);
+  text-decoration: none;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.95rem;
+}
+
+nav.top-nav a:hover {
+  color: var(--accent);
+}
+
+/* ---------- HERO ---------- */
+header {
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+/* Header background image */
+/* Header now uses a video background that covers the header area */
+header.hoobie-records-header-bgk {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1260 / 720;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+}
+
+header.hoobie-records-header-bgk video.header-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: drop-shadow(0px 0px 10px Red);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+header.hoobie-records-header-bgk .header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.about-content {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  max-width: 1100px;
+  margin: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.about-content h1 {
+  font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  letter-spacing: 1px;
+}
+
+.about-content h1 span {
+  color: var(--accent);
+  text-shadow: 0px 0px 3px yellow;
+  filter: drop-shadow(0px 0px 15px rgb(0, 0, 0));
+}
+
+.about-content p {
+  margin-top: 1rem;
+  max-width: 650px;
+  margin-inline: auto;
+  color: var(--muted);
+  text-shadow: 0px 0px 3px rgb(0, 0, 0);
+  filter: drop-shadow(0px 0px 2px rgb(0, 0, 0));
+}
+
+/* small controls overlay */
+.header-controls {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  text-shadow: 0px 0px 3px rgb(0, 0, 0);
+  filter: drop-shadow(0px 0px 2px rgb(0, 0, 0));
+}
+
+.header-controls button {
+  background: var(--accent);
+  color: var(--muted);
+  border: 1px solid black;
+  text-shadow: 0px 0px 3px rgb(0, 0, 0);
+  /* filter: drop-shadow(0px 0px 2px rgb(0, 0, 0)); */
+  padding: .35rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.header-controls button:hover {
+  background: var(--muted);
+  color: var(--accent);
+  transform: scale(1.05);
+}
+
+.header-controls input[type="range"]{
+  -webkit-appearance: none;
+  width: 160px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--accent), #ffb3b3);
+  border: 1px solid black;
+  filter: drop-shadow(0px 0px 2px rgb(0, 0, 0));
+  border-radius: 6px;
+  outline: none;
+}
+
+.header-controls input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #ff2222;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,34,34,0.6);
+  cursor: pointer;
+  margin-top: -4px;
+}
+
+.header-controls input[type="range"]::-moz-range-thumb{
+  width: 14px;
+  height: 14px;
+  background: #ff2222;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+header h1 {
+  font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  letter-spacing: 1px;
+  /* color: var(--accent); */
+  /* text-shadow: 0px 0px 3px yellow; */
+}
+
+header h1 span {
+  color: var(--accent);
+  text-shadow: 0px 0px 3px yellow;
+  filter: drop-shadow(0px 0px 15px rgb(0, 0, 0));
+}
+
+header p {
+  margin-top: 1rem;
+  max-width: 650px;
+  margin-inline: auto;
+  color: var(--muted);
+  text-shadow: 0px 0px 3px Red;
+  filter: drop-shadow(0px 0px 2px rgb(255, 0, 0));
+}
+
+/* ---------- SECTIONS ---------- */
+section {
+  /* padding: 4rem 1.5rem; */
+  max-width: 1100px;
+  margin: auto;
+  z-index: 2;
+}
+
+h2 {
+  font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--bg);
+    text-shadow: 0px 0px 1px red;
+}
+
+/* ---------- RELEASE GRID ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.release {
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.release:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 5px 5px rgb(255, 255, 255);
+}
+
+.release img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.release p {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.release a {
+  text-decoration: none;
+  color: #ff2222;
+}
+
+.release a:visited {
+  text-decoration: none;
+  color: #ff2222;
+}
+
+.release a:hover {
+  text-decoration: none;
+  color: rgb(245, 224, 0);
+}
+
+#releases h1 span {
+  font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  letter-spacing: 1px;
+
+  text-align: center;
+  color: var(--accent);
+  text-shadow: 0px 0px 3px yellow;
+  filter: drop-shadow(0px 0px 15px rgb(0, 0, 0));
+
+}
+
+#releases h2 {
+  text-align: center;
+  color: var(--accent);
+  text-shadow: 0px 0px 3px yellow;
+  filter: drop-shadow(0px 0px 15px rgb(0, 0, 0));
+
+}
+
+ #releases h3 {
+  color: #fffa69;
+  text-shadow: 0px 0px 3px rgb(0, 0, 0);
+}
+
+  #releases h4 {
+  font-size: 0.9rem;
+  color: #736f08;
+  text-shadow: 0px 0px 3px rgb(0, 0, 0);
+  font-style: italic;
+}
+
+    #releases h5 {
+  font-size: 0.8rem;
+  color: #ff2222;
+}
+
+#releases {
+  position: relative;
+  z-index: 2;
+}
+
+/* Ensure the canvas sits behind content and doesn't block interactions */
+#canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-shadow: 0px 0px 3px rgb(0, 0, 0);
+}
+</style>
+</head>
+
+<body>
+<div id="container-plasma">
+
+  <nav class="top-nav" role="navigation" aria-label="Main navigation">
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation">
+      <span class="sr-only">Toggle navigation</span>
+      ☰
+    </button>
+    <div class="links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="releases.html">Releases</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <img src="images/hoobie-records-navbar-brand.png" alt="Hoobie Records" class="nav-logo">
+  </nav>
+
+  <!-- HERO / INFO -->
+  <header class="hoobie-records-header-bgk">
+    <video id="headerVideo" class="header-bg" autoplay muted playsinline></video>
+  </header>
+
+  <!-- VIDEO CONTROLS -->
+  <div class="header-controls">
+    <button id="videoToggle" aria-pressed="false">Pause</button>
+    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+  </div>
+<canvas id="canvas"></canvas>
+
+
+  <!-- RELEASES -->
+  <section id="releases">
+    <h1><span>Releases</span></h1>
+
+    <div class="grid">
+      <div class="release">
+        <img src="releases/HR20260226-scum-puppy-dogman-dingleberries-and-other-nontraditional-lubricants-monsta-mashup-volume-4/HR20260226-scum-puppy-dogman-dingleberries-and-other-nontraditional-lubricants-monsta-mashup-volume-4-500.png">
+        <h5>HR20260226</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Dogman Dingleberries and Other Nontraditional Lubricants (Monsta Mashup Volume 4)</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260225-scum-puppy-sasquatch-woodbooger-recipes-for-multiple-sects-positions-monsta-mashup-volume-3/HR20260225-scum-puppy-sasquatch-woodbooger-recipes-for-multiple-sects-positions-monsta-mashup-volume-3-500.png">
+        <h5>HR20260225</h5>
+        <h3>Scum Puppy</h3>
+        <h4>101 Woodbooger Recipes For Multiple Sects Positions (Monsta Mashup Volume 3)</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260224-scum-puppy-total-eclipse-of-the-mothman-fart-knocker-lip-sync-monsta-mashup-volume-2/HR20260224-scum-puppy-total-eclipse-of-the-mothman-fart-knocker-lip-sync-monsta-mashup-volume-2-500.png">
+        <h5>HR20260224</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Total Eclipse of the Mothman Fart Knocker Lip Sync (Monsta Mashup Volume 2)</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260223-scum-puppy-sasquatch-meat-curtains-and-the-cryptids-who-love-them-monsta-mashup-volume-1/HR20260223-scum-puppy-sasquatch-meat-curtains-and-the-cryptids-who-love-them-monsta-mashup-volume-1-500.png">
+        <h5>HR20260223</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Sasquatch Meat Curtains and the Cryptids Who Love Them (Monsta Mashup Volume 1)</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260222-scum-puppy-straight-outta-waynesville/HR20260222-scum-puppy-straight-outta-waynesville-500.png">
+        <h5>HR20260222</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Straight Outta Waynesville</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260221-scum-puppy-count-doofu-queef-lords/HR20260221-scum-puppy-count-doofu-queef-lords-500.png">
+        <h5>HR20260221</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Count Doofu Queef Lords</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260220-jimson-sirkus-freakazoid-chupacabra-phantom-limbs/HR20260220-jimson-sirkus-freakazoid-chupacabra-phantom-limbs-500.png">
+        <h5>HR20260220</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Freakazoid Chupacabra Phantom Limbs</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260219-scum-puppy-death-metal-yeti-sausage/HR20260219-scum-puppy-death-metal-yeti-sausage-500.png">
+        <h5>HR20260219</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Death Metal Yeti Sausage</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260218-jimson-sirkus-bayou-tales/HR20260218-jimson-sirkus-bayou-tales-500.png">
+        <h5>HR20260218</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Bayou Tales</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260217-jimson-sirkus-the-ballad-of-corpsewood-manor/HR20260217-jimson-sirkus-the-ballad-of-corpsewood-manor-500.png">
+        <h5>HR20260217</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>The Ballad of Corpsewood Manor</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260216-scum-puppy-the beast-of-boggy-creek-vs-the honey-island-swamp-monster/HR20260216-scum-puppy-the beast-of-boggy-creek-vs-the honey-island-swamp-monster-500.png">
+        <h5>HR20260216</h5>
+        <h3>Scum Puppy</h3>
+        <h4>The Beast of Boggy Creek Vs. The Honey Island Swamp Monster</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260215-scum-puppy-backyard-bob/HR20260215-scum-puppy-backyard-bob-500.png">
+        <h5>HR20260215</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Backyard Bob</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260214-scum-puppy-no-sleep-till-frogman/HR20260214-scum-puppy-no-sleep-till-frogman-500.png">
+        <h5>HR20260214</h5>
+        <h3>Scum Puppy</h3>
+        <h4>No Sleep Till Frogman</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260213-scum-puppy-the-pope-lick-monster-vs-the-jersey-devil/HR20260213-scum-puppy-the-pope-lick-monster-vs-the-jersey-devil-500.png">
+        <h5>HR20260213</h5>
+        <h3>Scum Puppy</h3>
+        <h4>The Pope Lick Monster Vs. The Jersey Devil</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260212-the-semi-flying-headless-screaming-thrashing-chickens-west-ottawa-blowtorch/HR20260212-the-semi-flying-headless-screaming-thrashing-chickens-west-ottawa-blowtorch-500.png">
+        <h5>HR20260212</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>West Ottawa Blowtorch</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260211-the-semi-flying-headless-screaming-thrashing-chickens-you-went-to-class/HR20260211-the-semi-flying-headless-screaming-thrashing-chickens-you-went-to-class-500.png">
+        <h5>HR20260211</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>You Went To Class</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260210-the-semi-flying-headless-screaming-thrashing-chickens-poopy-tunes/HR20260210-the-semi-flying-headless-screaming-thrashing-chickens-poopy-tunes-500.png">
+        <h5>HR20260210</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>Poopy Tunes</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260209-the-semi-flying-headless-screaming-thrashing-chickens-nightmare/HR20260209-the-semi-flying-headless-screaming-thrashing-chickens-nightmare-500.png">
+        <h5>HR20260209</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>Nightmare</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260208-the-semi-flying-headless-screaming-thrashing-chickens-man-of-a-million-laughs/HR20260208-the-semi-flying-headless-screaming-thrashing-chickens-man-of-a-million-laughs-500.png">
+        <h5>HR20260208</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>Man Of A Million Laughs</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260207-the-semi-flying-headless-screaming-thrashing-chickens-hazelbank-shuffle/HR20260207-the-semi-flying-headless-screaming-thrashing-chickens-hazelbank-shuffle-500.png">
+        <h5>HR20260207</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>Hazelbank Shuffle</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260206-the-semi-flying-headless-screaming-thrashing-chickens-circus-music/HR20260206-the-semi-flying-headless-screaming-thrashing-chickens-circus-music-500.png">
+        <h5>HR20260206</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>Circus Music</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260205-the-semi-flying-headless-screaming-thrashing-chickens-aces-metal-jamboree/HR20260205-the-semi-flying-headless-screaming-thrashing-chickens-aces-metal-jamboree-500.png">
+        <h5>HR20260205</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>Aces (Metal Jamboree)</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260204-the-semi-flying-headless-screaming-thrashing-chickens-cheek-slapper-aficionado/HR20260204-the-semi-flying-headless-screaming-thrashing-chickens-cheek-slapper-aficionado-500.png">
+        <h5>HR20260204</h5>
+        <h3>The Semi-Flying, Headless, Screaming, Thrashing, Chickens</h3>
+        <h4>Cheek Slapper Aficionado</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260203-jimson-sirkus-your-wicked-taint/HR20260203-jimson-sirkus-your-wicked-taint-500.png">
+        <h5>HR20260203</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Your Wicked Taint</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260202-jimson-sirkus-michigan-squatchin/HR20260202-jimson-sirkus-michigan-squatchin-500.png">
+        <h5>HR20260202</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Michigan Squatchin'</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260201-scum-puppy-sirkus-sirkus/HR20260201-scum-puppy-sirkus-sirkus-500.png">
+        <h5>HR20260201</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Sirkus Sirkus</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260131-jimson-sirkus-sirkus-live-wire/HR20260131-jimson-sirkus-sirkus-live-wire-500.png">
+        <h5>HR20260131</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Sirkus Live Wire</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260130-scum-puppy-bark-like-a-beast/HR20260130-scum-puppy-bark-like-a-beast-500.png">
+        <h5>HR20260130</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Bark Like a Beast</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260129-various-artists-pigfoot-sloppy-poop-finger-woodbooger-upper-decker/HR20260129-various-artists-pigfoot-sloppy-poop-finger-woodbooger-upper-decker-500.png">
+        <h5>HR20260129</h5>
+        <h3>Various Artists</h3>
+        <h4>Pigfoot Sloppy Poop Finger Woodbooger Upper Decker</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260128-scum-puppy-bigfoot-and-the-enchanted-bush/HR20260128-scum-puppy-bigfoot-and-the-enchanted-bush-500.png">
+        <h5>HR20260128</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Bigfoot and the Enchanted Bush</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260127-scum-puppy-the-legend-of-scum-puppy-and-the-toilet-goblins/HR20260127-scum-puppy-the-legend-of-scum-puppy-and-the-toilet-goblins-500.png">
+        <h5>HR20260127</h5>
+        <h3>Scum Puppy</h3>
+        <h4>The Legend of Scum Puppy and the Toilet Goblins</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260126-scum-puppy-marionette-massacre/HR20260126-scum-puppy-marionette-massacre-500.png">
+        <h5>HR20260126</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Marionette Massacre</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260125-scum-puppy-buttrocket-party/HR20260125-scum-puppy-buttrocket-party-500.png">
+        <h5>HR20260125</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Buttrocket Party</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260124-scum-puppy-gloryhole-ghost/HR20260124-scum-puppy-gloryhole-ghost-500.png">
+        <h5>HR20260124</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Gloryhole Ghost</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260123-scum-puppy-mothmath-vs-frogman/HR20260123-scum-puppy-mothmath-vs-frogman-500.png">
+        <h5>HR20260123</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Mothman Vs. Frogman</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260122-kook-maluke-sock-thief/HR20260122-kook-maluke-sock-thief-500.png">
+        <h5>HR20260122</h5>
+        <h3>Kook Maluke</h3>
+        <h4>Sock Thief</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260121-jimson-sirkus-carnival-punks/HR20260121-jimson-sirkus-carnival-punks-500.png">
+        <h5>HR20260121</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Carnival Punks</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260120-scum-puppy-eff/HR20260120-scum-puppy-eff-500.png">
+        <h5>HR20260120</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Eff</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260119-scum-puppy-grindhouse-snark/HR20260119-scum-puppy-grindhouse-snark-500.png">
+        <h5>HR20260119</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Grindhouse Snark</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+               <div class="release">
+        <img src="releases/HR20260118-scum-puppy-mad-libs-funky-fresh/HR20260118-scum-puppy-mad-libs-funky-fresh-500.png">
+        <h5>HR20260118</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Mad Libs Funky Fresh</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+               <div class="release">
+        <img src="releases/HR20260117-jimson-sirkus-bigtop-blowout/HR20260117-jimson-sirkus-bigtop-blowout-500.png">
+        <h5>HR20260117</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Bigtop Blowout</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+               <div class="release">
+        <img src="releases/HR20260116-captain-big-old-blue-big-booty/HR20260116-captain-big-old-blue-big-booty-500.png">
+        <h5>HR20260116</h5>
+        <h3>Captain Big Old Blue</h3>
+        <h4>Big Booty</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260115-scum-puppy-cryptids-call/HR20260115-scum-puppy-cryptids-call-500.png">
+        <h5>HR20260115</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Cryptids Call</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260114-scum-puppy-jimson-sirkus/HR20260114-scum-puppy-jimson-sirkus-500.png">
+        <h5>HR20260114</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Jimson Sirkus</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260113-scum-puppy-evil-metric-conspiracy/HR20260113-scum-puppy-evil-metric-conspiracy-500.png">
+        <h5>HR20260113</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Evil Metric Conspiracy</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260112-scum-puppy-hazelbank/HR20260112-scum-puppy-hazelbank-500.png">
+        <h5>HR20260112</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Hazelbank</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+               <div class="release">
+        <img src="releases/HR20260111-scum-puppy-west-michigan-dogman/HR20260111-scum-puppy-west-michigan-dogman-500.png">
+        <h5>HR20260111</h5>
+        <h3>Scum Puppy</h3>
+        <h4>West Michigan Dogman</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260110-scum-puppy-hoobie-records-rocks/HR20260110-scum-puppy-hoobie-records-rocks-500.png">
+        <h5>HR20260110</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Hoobie Records Rocks</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260109-scum-puppy-do-you-wanna-pet-my-bear/HR20260109-scum-puppy-do-you-wanna-pet-my-bear-500.png">
+        <h5>HR20260109</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Do You Wanna Pet My Bear?</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260108-jimson-sirkus-welcome-to-the-bigtop/HR20260108-jimson-sirkus-welcome-to-the-bigtop-500.png">
+        <h5>HR20260108</h5>
+        <h3>Jimson Sirkus</h3>
+        <h4>Welcome to the Bigtop</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260107-scum-puppy-cave-cheese/HR20260107-scum-puppy-cave-cheese-500.png">
+        <h5>HR20260107</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Cave Cheese</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260106-scum-puppy-hopkinsville-horror/HR20260106-scum-puppy-hopkinsville-horror-500.png">
+        <h5>HR20260106</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Hopkinsville Horror</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260105-scum-puppy-lesrian-pigbian/HR20260105-scum-puppy-lesrian-pigbian-500.png">
+        <h5>HR20260105</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Lesrian Pigbian</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260104-scum-puppy-boo-hag/HR20260104-scum-puppy-boo-hag-500.png">
+        <h5>HR20260104</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Boo Hag</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260103-scum-puppy-bark-at-the-poon/HR20260103-scum-puppy-bark-at-the-poon-500.png">
+        <h5>HR20260103</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Bark at the Poon</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+      <div class="release">
+        <img src="releases/HR20260102-scum-puppy-hidoi-ongaku/HR20260102-scum-puppy-hidoi-ongaku-500.png">
+        <h5>HR20260102</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Hidoi Ongaku</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+    
+      <div class="release">
+        <img src="releases/HR20260101-scum-puppy-blank-room-soup/HR20260101-scum-puppy-blank-room-soup-500.png">
+        <h5>HR20260101</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Blank Room Soup</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR20251228-exalted-order-of-goats-feed-the-forge/HR20251228-exalted-order-of-goats-feed-the-forge-500.png">
+        <h5>HR20251228</h5>
+        <h3>Exalted Order of Goats</h3>
+        <h4>Feed the Forge</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR20251223-scum-puppy-alabama-white-thang/HR20251223-scum-puppy-alabama-white-thang-500.png">
+        <h5>HR20251223</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Alabama White Thang</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+  
+      <div class="release">
+        <img src="releases/HR20251219-sandra-hook-and-the-crisis-actors-krampusnacht/HR20251219-sandra-hook-and-the-crisis-actors-krampusnacht-500.png">
+        <h5>HR20251219</h5>
+        <h3>Sandra Hook and the Crisis Actors</h3>
+        <h4>Krampusnacht</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+  
+      <div class="release">
+        <img src="releases/HR20251214-scum-puppy-pull-my-finger/HR20251214-scum-puppy-pull-my-finger-500.png">
+        <h5>HR20251214</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Pull My Finger</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR20251125-bikini-farts-shart-attack/HR20251125-bikini-farts-shart-attack-500.png">
+        <h5>HR20251125</h5>
+        <h3>Bikini Farts</h3>
+        <h4>Shart Attack!</h4>
+        <p><a href='https://www.artcore.com/hoobie-records/releases?id=hoobie-records&%3Fquery=&sort=release-desc&onlyReleases=true&size=40&page=1&aggregate=true&sellerSearch=true' target='_blank'>Listen @ Artcore</a></p>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR023-so-gayngsta-the-mixtape-vol-2/HR023-so-gayngsta-the-mixtape-vol-2-500.png">
+        <h5>HR023</h5>
+        <h3>So Gayngsta</h3>
+        <h4>The Mixtape (Volume 2)</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR022-richard-m-burgess-the-prank-calls/HR022-richard-m-burgess-the-prank-calls-500.png">
+        <h5>HR022</h5>
+        <h3>Richard M. Burgess</h3>
+        <h4>The Prank Calls</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR021-so-gayngsta-the-mixtape/HR021-so-gayngsta-the-mixtape-500.png">
+        <h5>HR021</h5>
+        <h3>So Gayngsta</h3>
+        <h4>The Mixtape</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR020-retarded-muppit-farm-thriller-2/HR020-retarded-muppit-farm-thriller-2-500.png">
+        <h5>HR020</h5>
+        <h3>Retarded Muppit Farm</h3>
+        <h4>Thriller 2</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR019-reekoward-show-me/HR019-reekoward-show-me-500.png">
+        <h5>HR019</h5>
+        <h3>ReekoWard</h3>
+        <h4>Show Me...</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR018-various-artists-pornstars-for-christ/HR018-various-artists-pornstars-for-christ-500.png">
+        <h5>HR018</h5>
+        <h3>Various Artists</h3>
+        <h4>Pornstars for Christ</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR017-scum-puppy-night-of-the-giving-head/HR017-scum-puppy-night-of-the-giving-head-500.png">
+        <h5>HR017</h5>
+        <h3>Scum Puppy</h3>
+        <h4>Night of the Giving Head</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR016-death-killers-death-killers/HR016-death-killers-death-killers-500.png">
+        <h5>HR016</h5>
+        <h3>Death Killers</h3>
+        <h4>Death Killers</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR015-crunk-for-christ-jehovah-uana/HR015-crunk-for-christ-jehovah-uana-500.png">
+        <h5>HR015</h5>
+        <h3>Crunk For Christ</h3>
+        <h4>Jehova-uana</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR014-ken-sims-radio-pranks/HR014-ken-sims-radio-pranks-500.png">
+        <h5>HR014</h5>
+        <h3>Ken Sims</h3>
+        <h4>Radio Pranks</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR013-jeremys-enormous-meat-tray-a-sweaty-meat-sextraveganza/HR013-jeremys-enormous-meat-tray-a-sweaty-meat-sextraveganza-500.png">
+        <h5>HR013</h5>
+        <h3>Jeremy's Enormous Meat Tray</h3>
+        <h4>A Sweaty Meat Sextraveganza!</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR012-various-artists-basf-butt-ass-shit-flipper/HR012-various-artists-basf-butt-ass-shit-flipper-500.png">
+        <h5>HR012</h5>
+        <h3>Various Artists</h3>
+        <h4>BASF (Butt Ass Shit Flipper)</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR011-hideous-piglet-wild-a-beast-piggy-piggy/HR011-hideous-piglet-wild-a-beast-piggy-piggy-500.png">
+        <h5>HR011</h5>
+        <h3>Hideous Piglet Wild-a-Beast</h3>
+        <h4>Piggy Piggy</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR010.5-hat-highness-scum-puppy-hoobie-hat-box/HR010.5-hat-highness-scum-puppy-hoobie-hat-box-500.png">
+        <h5>HR010.5</h5>
+        <h3>Hat Highness</h3>
+        <h4>Scum Puppy Hoobie Hat Box</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR010-hat-highness-out-of-ga-tune/HR010-hat-highness-out-of-ga-tune-500.png">
+        <h5>HR010</h5>
+        <h3>Hat Highness</h3>
+        <h4>Out of Ga-Tune</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR009-slide-whistling-well-wisher-sw3/HR009-slide-whistling-well-wisher-sw3-500.png">
+        <h5>HR009</h5>
+        <h3>Sllde Whistling Well Wisher</h3>
+        <h4>SW3</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR008-jeremys-hot-pocket-stretched-beyond-all-recognition/HR008-jeremys-hot-pocket-stretched-beyond-all-recognition-500.png">
+        <h5>HR008</h5>
+        <h3>Jeremy's Hot Pocket</h3>
+        <h4>Stretched Beyond All Recognition</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR007-honkey-dong-the-other-white-meat/HR007-honkey-dong-the-other-white-meat-500.png">
+        <h5>HR007</h5>
+        <h3>Honkey Dong</h3>
+        <h4>The Other White Meat</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR006-various-artists-clown-porn-vol-1/HR006-various-artists-clown-porn-vol-1-500.png">
+        <h5>HR006</h5>
+        <h3>Various Artists</h3>
+        <h4>Clown Porn (Vol. 1)</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR005-poon-poontronik/HR005-poon-poontronik-500.png">
+        <h5>HR005</h5>
+        <h3>Poon</h3>
+        <h4>Poontronik</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR004-the-pickle-assplosion/HR004-the-pickle-assplosion-500.png">
+        <h5>HR004</h5>
+        <h3>The Pickle</h3>
+        <h4>Assplosion</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR003-captain-big-old-blue-scurvy-overindulgence-and-a-wooden-lip/HR003-captain-big-old-blue-scurvy-overindulgence-and-a-wooden-lip-500.png">
+        <h5>HR003</h5>
+        <h3>Captain Big Old Blue</h3>
+        <h4>Scurvy, Overindulgence and a Wooden Lip</p>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR002.5-the-pickle-poon-scum-puppy-party-pack/HR002.5-the-pickle-poon-scum-puppy-party-pack-500.png">
+        <h5>HR002.5</h5>
+        <h3>The Pickle/Poon</h3>
+        <h4>Scum Puppy Party Pack!</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR002-poon-poontunes/HR002-poon-poontunes-500.png">
+        <h5>HR002</h5>
+        <h3>Poon</h3>
+        <h4>Poontunes</h4>
+      </div>
+
+      <div class="release">
+        <img src="releases/HR001-the-pickle-meat-scones/HR001-the-pickle-meat-scones-500.png">
+        <h5>HR001</h5>
+        <h3>The Pickle</h3>
+        <h4>Meat Scones</h4>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+    © <script>document.write(new Date().getFullYear());</script> Hoobie Records
+  </footer>
+  
+</div>
+
+  <script>
+  // Mobile nav toggle
+  (function(){
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.getElementById('navLinks');
+    if (!toggle || !links) return;
+
+    toggle.addEventListener('click', function(e){
+      const isOpen = links.classList.toggle('open');
+      this.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Close dropdown when a link is clicked
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close when clicking outside the nav
+    document.addEventListener('click', (e) => {
+      if (!links.classList.contains('open')) return;
+      if (e.target.closest && e.target.closest('nav.top-nav')) return;
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && links.classList.contains('open')) {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
+      }
+    });
+  })();
+  </script>
+
+  <script>
+  (function(){
+    const video = document.getElementById('headerVideo');
+    const toggle = document.getElementById('videoToggle');
+    const slider = document.getElementById('volumeSlider');
+
+    // optional label for debugging / display
+    const label = document.createElement('span');
+    label.id = 'videoLabel';
+    label.style.marginLeft = '0.5rem';
+    label.style.color = 'var(--muted)';
+    label.style.fontSize = '0.85rem';
+    document.querySelector('.header-controls').appendChild(label);
+
+    // Use a hardcoded playlist from the `mp4/hom/` folder (filenames provided by user)
+    const knownFiles = [
+      'rel/jimson-sirkus-boo-hag-your-wicked-taint.mp4',
+      'rel/scum-puppy-bigtop-ritual-abuse.mp4',
+      'rel/scum-puppy-waynesville-power-stroke.mp4',
+      'rel/the-semi-flying-headless-screaming-thrashing-chickens-hazelbank-shuffle.mp4'
+    ];
+
+    // playlist uses URL-encoded paths so spaces and special chars load correctly
+    let playlist = knownFiles.map(f => encodeURI('mp4/' + f));
+    let stopped = false;
+    let currentIndex = -1;
+
+    function pickRandomIndex(){
+      if (!playlist || playlist.length === 0) return -1;
+      if (playlist.length === 1) return 0;
+      let idx;
+      let attempts = 0;
+      do {
+        idx = Math.floor(Math.random() * playlist.length);
+        attempts++;
+      } while (idx === currentIndex && attempts < 10);
+      return idx;
+    }
+
+    async function buildPlaylist(){
+      // we already have a known playlist; leave as-is.
+      return;
+    }
+
+    function setLabel(text){
+      if (label) label.textContent = text || '';
+    }
+
+    function playNext(){
+      if (stopped) return;
+      const idx = pickRandomIndex();
+      if (idx < 0) {
+        setLabel('No videos found');
+        return;
+      }
+      const src = playlist[idx];
+      currentIndex = idx;
+      // display filename without folder and decoded
+      try { setLabel(decodeURIComponent(src).replace(/^mp4\//, '')); } catch(e){ setLabel(src); }
+      video.src = src;
+      video.load();
+      video.play().then(() => {
+        video.style.opacity = '1';
+        toggle.textContent = 'Pause';
+        toggle.setAttribute('aria-pressed','false');
+        // Attempt to unmute after a successful autoplay (may be blocked by browser).
+        tryUnmuteAfterAutoplay();
+      }).catch(() => {
+        // On error (file not found / blocked), remove that candidate and try another
+        // update currentIndex if needed
+        playlist = playlist.filter((p, i) => {
+          if (i === currentIndex) currentIndex = -1;
+          return p !== src;
+        });
+        setTimeout(playNext, 200);
+      });
+    }
+
+    // Try to unmute programmatically after autoplay; browsers may still block audible autoplay.
+    function tryUnmuteAfterAutoplay(){
+      const v = slider ? parseFloat(slider.value) : 1;
+      if (v > 0) {
+        try {
+          video.muted = false;
+          video.volume = v;
+          // replay to ensure audio starts (may be rejected if browser blocks unmute)
+          video.play().catch(()=>{});
+        } catch(e) {}
+      }
+    }
+
+    // Ensure a user gesture will unmute (guaranteed by policy). Listen once.
+    function unmuteOnGesture(){
+      const v = slider ? parseFloat(slider.value) : 1;
+      try {
+        video.muted = false;
+        video.volume = v;
+        if (video.paused && !stopped) video.play().catch(()=>{});
+      } catch(e) {}
+    }
+    document.addEventListener('click', unmuteOnGesture, { once: true, capture: true });
+    document.addEventListener('keydown', unmuteOnGesture, { once: true, capture: true });
+
+    // initialize volume slider behavior
+    if (slider) {
+      // set initial volume (will unmute when user moves slider)
+      try { video.volume = parseFloat(slider.value); } catch(e){}
+      slider.addEventListener('input', (e) => {
+        const v = parseFloat(e.target.value);
+        video.volume = v;
+        if (v > 0) {
+          video.muted = false;
+        }
+        // ensure video plays if user adjusts volume while paused
+        if (video.paused && !stopped) {
+          video.play().catch(()=>{});
+        }
+      });
+    }
+
+    video.addEventListener('playing', () => {
+      video.style.opacity = '1';
+    });
+
+    video.addEventListener('ended', () => {
+      setTimeout(playNext, 150);
+    });
+
+    video.addEventListener('error', () => {
+      if (video.src) {
+        const url = video.src;
+        playlist = playlist.filter(p => p !== url && !url.endsWith(p));
+      }
+      setTimeout(playNext, 200);
+    });
+
+    toggle.addEventListener('click', () => {
+      if (!video) return;
+      if (video.paused) {
+        stopped = false;
+        // user-initiated play -> unmute if slider > 0
+        if (slider && parseFloat(slider.value) > 0) video.muted = false;
+        video.play().catch(()=>{});
+        toggle.textContent = 'Pause';
+        toggle.setAttribute('aria-pressed','false');
+      } else {
+        video.pause();
+        stopped = true;
+        toggle.textContent = 'Play';
+        toggle.setAttribute('aria-pressed','true');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await buildPlaylist();
+      if (!playlist || playlist.length === 0) {
+        setLabel('No videos found in mo4/');
+        toggle.disabled = true;
+        return;
+      }
+      stopped = false;
+      playNext();
+    });
+  })();
+  </script>
+
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const c = canvas.getContext("2d");
+
+    // size of canvas
+    const imgSize = 512;
+
+    canvas.width = imgSize;
+    canvas.height = imgSize;
+
+    // init image data with black pixels
+    const image = c.createImageData(imgSize, imgSize);
+    for (let i = 0; i < image.data.length; i += 4) {
+      image.data[i] = 0; // R
+      image.data[i + 1] = 0; // G
+      image.data[i + 2] = 0; // B
+      image.data[i + 3] = 255; // A
+    }
+
+    // size of our height maps
+    const mapSize = 1024;
+
+    // returns the distance of point x,y from the origin 0,0
+    const distance = (x, y) => Math.sqrt(x * x + y * y);
+  
+
+
+    // init height map 1
+    const heightMap1 = [];
+    for (let u = 0; u < mapSize; u++) {
+      for (let v = 0; v < mapSize; v++) {
+        // index of coordinate in height map array
+        const i = u * mapSize + v;
+
+        // u,v are coordinates with origin at upper left corner
+        // cx and cy are coordinates with origin at the
+        // center of the map
+        const cx = u - mapSize / 2;
+        const cy = v - mapSize / 2;
+
+        // distance from middle of map
+        const d = distance(cx, cy);
+
+        // stretching so we get the desired ripple density on our map
+        const stretch = (3 * Math.PI) / (mapSize / 2);
+
+        // wavy height value between -1 and 1
+        const ripple = Math.sin(d * stretch);
+
+        // wavy height value normalized to 0..1
+        const normalized = (ripple + 1) / 2;
+
+        // height map value 0..128, integer
+        heightMap1[i] = Math.floor(normalized * 128);
+      }
+    }
+
+    const heightMap2 = [];
+    for (let u = 0; u < mapSize; u++) {
+      for (let v = 0; v < mapSize; v++) {
+        const i = u * mapSize + v;
+        const cx = u - mapSize / 2;
+        const cy = v - mapSize / 2;
+
+        // skewed distance as input to chaos field calculation,
+        // scaled for smoothness over map distance
+        const d1 = distance(0.8 * cx, 1.3 * cy) * 0.022;
+        const d2 = distance(1.35 * cx, 0.45 * cy) * 0.022;
+
+        const s = Math.sin(d1);
+        const c = Math.cos(d2);
+        // height value between -2 and +2
+        const h = s + c;
+
+        // height value between 0..1
+        const normalized = (h + 2) / 4;
+        // height value between 0..127, integer
+        heightMap2[i] = Math.floor(normalized * 127);
+      }
+    }
+
+    // offsets for moving height maps
+    let dx1 = 0;
+    let dy1 = 0;
+
+    let dx2 = 0;
+    let dy2 = 0;
+
+    // adjust height maps offsets
+    const moveHeightMaps = t => {
+      dx1 = Math.floor(
+        (((Math.cos(t * 0.0002 + 0.4 + Math.PI) + 1) / 2) * mapSize) / 2
+      );
+      dy1 = Math.floor((((Math.cos(t * 0.0003 - 0.1) + 1) / 2) * mapSize) / 2);
+      dx2 = Math.floor((((Math.cos(t * -0.0002 + 1.2) + 1) / 2) * mapSize) / 2);
+      dy2 = Math.floor(
+        (((Math.cos(t * -0.0003 - 0.8 + Math.PI) + 1) / 2) * mapSize) / 2
+      );
+    };
+
+    const updateImageData = () => {
+      for (let u = 0; u < imgSize; u++) {
+        for (let v = 0; v < imgSize; v++) {
+          // indexes into height maps for pixel
+          const i = (u + dy1) * mapSize + (v + dx1);
+          const k = (u + dy2) * mapSize + (v + dx2);
+
+          // index for pixel in image data
+          // remember it's 4 bytes per pixel
+          const j = u * imgSize * 4 + v * 4;
+
+          // height value of 0..255
+          let h = heightMap1[i] + heightMap2[k];
+
+          // map grayscale height to a red -> yellow gradient
+          // red stays at max, green varies with `h`, blue is zero
+          const g = Math.max(0, Math.min(255, Math.floor(h)));
+          const r = 255;
+          const b = 0;
+
+          // set pixel data
+          image.data[j] = r;
+          image.data[j + 1] = g;
+          image.data[j + 2] = b;
+        }
+      }
+    };
+
+    const tick = time => {
+      moveHeightMaps(time);
+      updateImageData();
+
+      c.putImageData(image, 0, 0);
+
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+
+
+
+  </script>
+
+  </body>
+  </html>

@@ -1,0 +1,13 @@
+{
+  "name": "hoobiercords-site",
+  "version": "1.0.0",
+  "description": "Hoobie Records static site",
+  "scripts": {
+    "build:css": "postcss css/styles.css --use cssnano -o css/styles.min.css --map",
+    "watch:css": "postcss css/styles.css --use cssnano -o css/styles.min.css --map --watch"
+  },
+  "devDependencies": {
+    "postcss-cli": "^10.1.0",
+    "cssnano": "^5.1.15"
+  }
+}
